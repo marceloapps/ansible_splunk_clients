@@ -189,11 +189,11 @@ def serverclass_exists(server_class):
 
 #method to create or update a serverclass, adding new clients to the list
 def manage_serverclass(create, server_class):
-    if create:
-        url = "/services/deployment/server/serverclasses"
-        whitelist_size = 0
-    else:
-        url = "/services/deployment/server/serverclasses/" + server_class
+    url = "/services/deployment/server/serverclasses/"
+    whitelist_size = 0
+
+    if not create:
+        url = url + server_class
         whitelist_size = serverclass_client_list(server_class)
 
     connection = six.moves.http_client.HTTPSConnection(GLOBAL_DEPLOYMENT, 8089)
@@ -248,7 +248,7 @@ def reload_serverclass(server_class):
                'Authorization': "Splunk %s" % GLOBAL_SESSION_KEY
               }
 
-    connection.request("GET", "/services/deployment/server/serverclasses/" + server_class, "", headers)
+    connection.request("POST", F"/services/deployment/server/serverclasses/{server_class}/reload", "", headers)
     response = connection.getresponse()
     content = response.read()
     connection.close()    
