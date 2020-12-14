@@ -248,7 +248,9 @@ def reload_serverclass(server_class):
                'Authorization': "Splunk %s" % GLOBAL_SESSION_KEY
               }
 
-    connection.request("POST", F"/services/deployment/server/serverclasses/{server_class}/reload", "", headers)
+    body = urllib.urlencode({"serverclass": server_class})
+
+    connection.request("POST", "/services/deployment/server/config/_reload", body, headers)
     response = connection.getresponse()
     content = response.read()
     connection.close()    
