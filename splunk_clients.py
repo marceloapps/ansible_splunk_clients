@@ -5,7 +5,6 @@ import sys
 import splunklib.six as six
 import urllib
 from xml.etree import ElementTree
-import getpass
 
 __metaclass__ = type
 
@@ -251,8 +250,6 @@ def reload_serverclass(server_class):
     body = urllib.urlencode({"serverclass": server_class})
 
     connection.request("POST", "/services/deployment/server/config/_reload", body, headers)
-    response = connection.getresponse()
-    content = response.read()
     connection.close()    
 
 if __name__ == '__main__':
